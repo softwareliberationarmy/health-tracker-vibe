@@ -1,0 +1,13 @@
+{
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": ".copilot/code-generation.md"
+    }
+  ],
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Write a brief conventional commit message format, then two line breaks, and then a more detailed bulleted list of changes made in the commit. The first line should be a summary of the changes made, and the second line should be a more detailed description of the changes made."
+    }
+  ]
+}
