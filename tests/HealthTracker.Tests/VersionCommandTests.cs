@@ -22,7 +22,7 @@ public class VersionCommandTests
         // Act
         using var process = Process.Start(processStartInfo);
         process.Should().NotBeNull();
-        
+
         var output = process!.StandardOutput.ReadToEnd();
         var error = process.StandardError.ReadToEnd();
         process.WaitForExit();        // Assert
