@@ -1,5 +1,6 @@
 using Dapper;
 using FluentAssertions;
+using HealthTracker.Api.Data;
 using Microsoft.Data.Sqlite;
 
 namespace HealthTracker.Tests;
@@ -14,7 +15,8 @@ public class DbInitializerTests
         using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
 
-        var dbInitializer = new Api.DbInitializer(connectionString);
+        var connectionFactory = new SqliteConnectionFactory(connectionString);
+        var dbInitializer = new DbInitializer(connectionFactory);
 
         // Act
         await dbInitializer.InitializeAsync();

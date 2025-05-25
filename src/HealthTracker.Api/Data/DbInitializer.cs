@@ -1,20 +1,19 @@
 using Dapper;
-using Microsoft.Data.Sqlite;
 
-namespace HealthTracker.Api;
+namespace HealthTracker.Api.Data;
 
 public class DbInitializer
 {
-    private readonly string _connectionString;
+    private readonly IDbConnectionFactory _connectionFactory;
 
-    public DbInitializer(string connectionString)
+    public DbInitializer(IDbConnectionFactory connectionFactory)
     {
-        _connectionString = connectionString;
+        _connectionFactory = connectionFactory;
     }
 
     public async Task InitializeAsync()
     {
-        using var connection = new SqliteConnection(_connectionString);
+        using var connection = _connectionFactory.CreateConnection();
         await connection.OpenAsync();
 
         // Create weighins table
