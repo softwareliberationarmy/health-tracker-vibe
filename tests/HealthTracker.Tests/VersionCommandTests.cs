@@ -7,7 +7,9 @@ public class VersionCommandTests
 {
     [Fact]
     public void WhenVersionArgumentProvided_ShouldOutputVersionNumber()
-    {        // Arrange
+    {
+        // Arrange
+        var workingDirectory = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
         var processStartInfo = new ProcessStartInfo
         {
             FileName = "dotnet",
@@ -16,7 +18,7 @@ public class VersionCommandTests
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             CreateNoWindow = true,
-            WorkingDirectory = @"d:\git\sideprojects\health-tracker"
+            WorkingDirectory = workingDirectory
         };
 
         // Act
@@ -25,9 +27,14 @@ public class VersionCommandTests
 
         var output = process!.StandardOutput.ReadToEnd();
         var error = process.StandardError.ReadToEnd();
-        process.WaitForExit();        // Assert
-        output.Should().Be($"0.1.0{Environment.NewLine}", "CLI should output exactly '0.1.0' followed by a newline, but got: '{0}'", output.Replace("\n", "\\n").Replace("\r", "\\r"));
-        process.ExitCode.Should().Be(0, "CLI should exit successfully. Error output: {0}", error);
+        process.WaitForExit();
+
+        // Assert
+        output.Should().Be($"0.1.0{Environment.NewLine}",
+            "CLI should output exactly '0.1.0' followed by a newline, but got: '{0}'",
+            output.Replace("\n", "\\n").Replace("\r", "\\r"));
+        process.ExitCode.Should().Be(0,
+            "CLI should exit successfully. Error output: {0}", error);
         error.Should().BeEmpty("There should be no error output");
     }
 }
