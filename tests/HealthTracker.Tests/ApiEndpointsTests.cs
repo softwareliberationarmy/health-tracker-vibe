@@ -2,20 +2,56 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using FluentAssertions;
+using HealthTracker.Api.Data;
 using HealthTracker.Core.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HealthTracker.Tests;
 
 /// <summary>
+/// Custom WebApplicationFactory for testing with shared in-memory SQLite database
+/// </summary>
+public class TestWebApplicationFactory : WebApplicationFactory<Program>
+{
+    private static readonly string SharedInMemoryConnectionString = $"Data Source=TestDb_{Guid.NewGuid():N};Mode=Memory;Cache=Shared";
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureServices(services =>
+        {
+            // Remove the existing database services
+            var dbConnectionFactoryDescriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(IDbConnectionFactory));
+            if (dbConnectionFactoryDescriptor != null)
+            {
+                services.Remove(dbConnectionFactoryDescriptor);
+            }
+
+            var dbInitializerDescriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(DbInitializer));
+            if (dbInitializerDescriptor != null)
+            {
+                services.Remove(dbInitializerDescriptor);
+            }
+
+            // Add test database services with shared in-memory SQLite database
+            services.AddSingleton<IDbConnectionFactory>(new SqliteConnectionFactory(SharedInMemoryConnectionString));
+            services.AddSingleton<DbInitializer>();
+        });
+    }
+}
+
+/// <summary>
 /// Integration tests for the Health Tracker API endpoints
 /// </summary>
-public class ApiEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
+public class ApiEndpointsTests : IClassFixture<TestWebApplicationFactory>
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly TestWebApplicationFactory _factory;
     private readonly HttpClient _client;
 
-    public ApiEndpointsTests(WebApplicationFactory<Program> factory)
+    public ApiEndpointsTests(TestWebApplicationFactory factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();
