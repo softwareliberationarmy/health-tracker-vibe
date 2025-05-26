@@ -35,7 +35,7 @@ public class CliCommandRoutingTests
         var error = process.StandardError.ReadToEnd();
         process.WaitForExit();        // Assert
         process.ExitCode.Should().Be(0, "log command should be recognized and not error");
-        output.Should().Contain("log",
+        output.Should().Contain("Log command invoked",
             "Output should contain information about the log command or placeholder message");
     }
 
@@ -62,7 +62,7 @@ public class CliCommandRoutingTests
         var error = process.StandardError.ReadToEnd();
         process.WaitForExit();        // Assert
         process.ExitCode.Should().Be(0, "view command should be recognized and not error");
-        output.Should().Contain("view",
+        output.Should().Contain("View command invoked",
             "Output should contain information about the view command or placeholder message");
     }
 
@@ -89,7 +89,7 @@ public class CliCommandRoutingTests
         var error = process.StandardError.ReadToEnd();
         process.WaitForExit();        // Assert
         process.ExitCode.Should().Be(0, "log weight command should be recognized and not error");
-        output.Should().Contain("weight",
+        output.Should().Contain("Log weight invoked",
             "Output should indicate the log weight command was reached");
     }
 
@@ -116,7 +116,65 @@ public class CliCommandRoutingTests
         var error = process.StandardError.ReadToEnd();
         process.WaitForExit();        // Assert
         process.ExitCode.Should().Be(0, "view weight command should be recognized and not error");
-        output.Should().Contain("weight",
+        output.Should().Contain("View weight invoked",
             "Output should indicate the view weight command was reached");
+    }
+
+    [Fact]
+    public void WhenLogRunCommandProvided_ShouldReachPlaceholderHandler()
+    {
+        // Arrange
+        var processStartInfo = new ProcessStartInfo
+        {
+            FileName = "dotnet",
+            Arguments = "run --project src/HealthTracker.Cli -- log run",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            CreateNoWindow = true,
+            WorkingDirectory = _workingDirectory
+        };
+
+        // Act
+        using var process = Process.Start(processStartInfo);
+        process.Should().NotBeNull();
+
+        var output = process!.StandardOutput.ReadToEnd();
+        var error = process.StandardError.ReadToEnd();
+        process.WaitForExit();
+
+        // Assert
+        process.ExitCode.Should().Be(0, "log run command should be recognized and not error");
+        output.Should().Contain("Log run invoked",
+            "Output should indicate the log run command was reached");
+    }
+
+    [Fact]
+    public void WhenViewRunCommandProvided_ShouldReachPlaceholderHandler()
+    {
+        // Arrange
+        var processStartInfo = new ProcessStartInfo
+        {
+            FileName = "dotnet",
+            Arguments = "run --project src/HealthTracker.Cli -- view run",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            CreateNoWindow = true,
+            WorkingDirectory = _workingDirectory
+        };
+
+        // Act
+        using var process = Process.Start(processStartInfo);
+        process.Should().NotBeNull();
+
+        var output = process!.StandardOutput.ReadToEnd();
+        var error = process.StandardError.ReadToEnd();
+        process.WaitForExit();
+
+        // Assert
+        process.ExitCode.Should().Be(0, "view run command should be recognized and not error");
+        output.Should().Contain("View run invoked",
+            "Output should indicate the view run command was reached");
     }
 }
