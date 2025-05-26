@@ -177,4 +177,66 @@ public class CliCommandRoutingTests
         output.Should().Contain("View run invoked",
             "Output should indicate the view run command was reached");
     }
+
+    [Fact]
+    public void WhenVerboseOptionProvidedBeforeSubcommand_ShouldIndicateVerboseModeEnabled()
+    {
+        // Arrange
+        var processStartInfo = new ProcessStartInfo
+        {
+            FileName = "dotnet",
+            Arguments = "run --project src/HealthTracker.Cli -- --verbose log weight",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            CreateNoWindow = true,
+            WorkingDirectory = _workingDirectory
+        };
+
+        // Act
+        using var process = Process.Start(processStartInfo);
+        process.Should().NotBeNull();
+
+        var output = process!.StandardOutput.ReadToEnd();
+        var error = process.StandardError.ReadToEnd();
+        process.WaitForExit();
+
+        // Assert
+        process.ExitCode.Should().Be(0, "verbose option should be recognized and not error");
+        output.Should().Contain("Log weight invoked",
+            "Output should indicate the log weight command was reached");
+        output.Should().Contain("Verbose mode ON",
+            "Output should indicate verbose mode is enabled when --verbose flag is provided");
+    }
+
+    [Fact]
+    public void WhenVerboseOptionProvidedAfterSubcommand_ShouldIndicateVerboseModeEnabled()
+    {
+        // Arrange
+        var processStartInfo = new ProcessStartInfo
+        {
+            FileName = "dotnet",
+            Arguments = "run --project src/HealthTracker.Cli -- log weight --verbose",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            CreateNoWindow = true,
+            WorkingDirectory = _workingDirectory
+        };
+
+        // Act
+        using var process = Process.Start(processStartInfo);
+        process.Should().NotBeNull();
+
+        var output = process!.StandardOutput.ReadToEnd();
+        var error = process.StandardError.ReadToEnd();
+        process.WaitForExit();
+
+        // Assert
+        process.ExitCode.Should().Be(0, "verbose option should be recognized and not error");
+        output.Should().Contain("Log weight invoked",
+            "Output should indicate the log weight command was reached");
+        output.Should().Contain("Verbose mode ON",
+            "Output should indicate verbose mode is enabled when --verbose flag is provided");
+    }
 }
