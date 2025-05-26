@@ -33,6 +33,8 @@
 ### C# coding standards
 
 - Prefer curly braces for all conditional code blocks, even if they only have one statement
+- Methods should not be allowed to grow beyond 50 lines. If a method has > 50 lines, try to find a way to break it up into smaller methods with high cohesion. Don't spend more than 60 seconds trying to refactor it. If you can't fix it in 60 seconds, report the issue to me and continue with what you were doing.
+- Classes and .cs files should not be allowed to grow beyond 500 lines. If a .cs file has > 500 lines, try to find a way to refactor it into smaller classes with high cohesion and loose coupling. Don't spend more than 60 seconds trying to refactor it. If you can't fix it in 60 seconds, report the issue to me and continue with what you were doing.
 
 ## Linting and Cleanup
 
