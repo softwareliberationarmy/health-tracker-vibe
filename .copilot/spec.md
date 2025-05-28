@@ -19,14 +19,12 @@ This project is a **.NET-based command-line tool** for logging and viewing perso
 
   - Logs a new weigh-in
   - Defaults `date` to today if omitted
-  - If user enters `health log weight`, system will provide individual prompts for each field instead
 
 - `health log run <distance> <time> [date]`
 
   - Logs a new run (e.g., `3.1mi` or `5km`)
   - Time can be `MM:SS` or `HH:MM:SS`
   - Defaults `date` to today if omitted
-  - If use enters `health log run`, system will provide individual prompts for each field instead
 
 - `health view weight [--last 5]`
 
