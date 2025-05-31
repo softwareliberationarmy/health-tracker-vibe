@@ -36,9 +36,9 @@ This project is a **.NET-based command-line tool** for logging and viewing perso
   - Displays last X runs in table format (default = 5)
   - optional parameter `--last` to change the number of entries
 
-- `health --version`
+- `health --about`
 
-  - Shows current tool version
+  - Shows current CLI version, API version, number of runs logged, number of weigh-ins logged, last run logged, last weigh-in logged
 
 ## Architecture
 
@@ -64,6 +64,7 @@ This project is a **.NET-based command-line tool** for logging and viewing perso
   - `GET /weight/last/{count}` — Return last {count} weigh-ins
   - `POST /run` — Create a new run (single record only)
   - `GET /run/last/{count}` — Return last {count} runs
+  - `GET /about` - Return API version info, number of runs and weigh-ins logged, last entry date for runs and weigh-ins
 
 ### Docker
 
