@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a **.NET-based command-line tool** for logging and viewing personal health data, including daily **weigh-ins** and **runs**. It uses a **SQLite-backed API hosted in Docker**, and is designed for use across multiple machines. The system consists of:
+This project is a **.NET-based command-line tool** for logging and viewing personal health data, including daily **weigh-ins** and **runs**. It uses a **SQLite-backed API hosted in Docker**, and is designed for use across multiple machines, but not for concurrent access. The system consists of:
 
 - A **global CLI tool** (`health`) built with `.NET` and `Spectre.Console`
 - A **REST API backend** using Minimal APIs and Dapper
@@ -19,14 +19,12 @@ This project is a **.NET-based command-line tool** for logging and viewing perso
 
   - Logs a new weigh-in
   - Defaults `date` to today if omitted
-  - If user enters `health log weight`, system will provide individual prompts for each field instead
 
 - `health log run <distance> <time> [date]`
 
   - Logs a new run (e.g., `3.1mi` or `5km`)
   - Time can be `MM:SS` or `HH:MM:SS`
   - Defaults `date` to today if omitted
-  - If use enters `health log run`, system will provide individual prompts for each field instead
 
 - `health view weight [--last 5]`
 
@@ -39,6 +37,7 @@ This project is a **.NET-based command-line tool** for logging and viewing perso
   - optional parameter `--last` to change the number of entries
 
 - `health --version`
+
   - Shows current tool version
 
 ## Architecture
@@ -62,9 +61,9 @@ This project is a **.NET-based command-line tool** for logging and viewing perso
 - **Database**: SQLite (embedded in Docker container)
 - **Endpoints**:
   - `POST /weight` — Create a new weigh-in (single record only)
-  - `GET /weight/last/5` — Return last 5 weigh-ins
+  - `GET /weight/last/{count}` — Return last {count} weigh-ins
   - `POST /run` — Create a new run (single record only)
-  - `GET /run/last/5` — Return last 5 runs
+  - `GET /run/last/{count}` — Return last {count} runs
 
 ### Docker
 
@@ -77,26 +76,26 @@ This project is a **.NET-based command-line tool** for logging and viewing perso
 
 ### `weighins` Table
 
-| Column       | Type    | Constraints                                   |
-| ------------ | ------- | --------------------------------------------- |
-| id           | INTEGER | Primary Key, Auto Increment                   |
-| date         | TEXT    | ISO 8601 UTC, Required                        |
-| weight       | REAL    | Required, `CHECK(weight BETWEEN 100 AND 300)` |
-| bmi          | REAL    | Required                                      |
-| fat          | REAL    | `CHECK(fat BETWEEN 0 AND 100)`                |
-| muscle       | REAL    | `CHECK(muscle BETWEEN 0 AND 100)`             |
-| restingMetab | INTEGER | `CHECK(restingMetab > 1000)`                  |
-| visceralFat  | INTEGER | `CHECK(visceralFat BETWEEN 10 AND 30)`        |
+| Column       | Type    | Constraints                                                               |
+| ------------ | ------- | ------------------------------------------------------------------------- |
+| id           | INTEGER | Primary Key, Auto Increment                                               |
+| date         | TEXT    | ISO 8601 with timezone offset (e.g., 2025-05-31T14:30:45-04:00), Required |
+| weight       | REAL    | Required, `CHECK(weight BETWEEN 100 AND 300)`                             |
+| bmi          | REAL    | Required                                                                  |
+| fat          | REAL    | `CHECK(fat BETWEEN 0 AND 100)`                                            |
+| muscle       | REAL    | `CHECK(muscle BETWEEN 0 AND 100)`                                         |
+| restingMetab | INTEGER | `CHECK(restingMetab > 1000)`                                              |
+| visceralFat  | INTEGER | `CHECK(visceralFat BETWEEN 10 AND 30)`                                    |
 
 ### `runs` Table
 
-| Column       | Type    | Constraints                            |
-| ------------ | ------- | -------------------------------------- |
-| id           | INTEGER | Primary Key, Auto Increment            |
-| date         | TEXT    | ISO 8601 UTC, Required                 |
-| distance     | REAL    | `CHECK(distance > 0)`                  |
-| distanceUnit | TEXT    | e.g., `mi`, `km`; Required             |
-| time         | INTEGER | Required (stored as number of seconds) |
+| Column       | Type    | Constraints                                                               |
+| ------------ | ------- | ------------------------------------------------------------------------- |
+| id           | INTEGER | Primary Key, Auto Increment                                               |
+| date         | TEXT    | ISO 8601 with timezone offset (e.g., 2025-05-31T14:30:45-04:00), Required |
+| distance     | REAL    | `CHECK(distance > 0)`                                                     |
+| distanceUnit | TEXT    | e.g., `mi`, `km`; Required                                                |
+| time         | INTEGER | Required (stored as number of seconds)                                    |
 
 ## Input Parsing and Validation
 
@@ -105,7 +104,8 @@ This project is a **.NET-based command-line tool** for logging and viewing perso
 - CLI accepts dates as `M/D`
 - Automatically appends current year
 - Rejects dates later than today
-- Dates are converted to **UTC** for storage and returned in **local time** for display
+- Dates are stored with the user's local timezone offset (e.g., `-04:00`) rather than converted to UTC
+- Display remains in local time (no conversion needed)
 
 ### Units and Formats
 
@@ -187,3 +187,5 @@ Example usage:
 - Integration with fitness APIs (Strava, Apple Health, etc.)
 - Support for custom units or metric/imperial toggling
 - Data sync/merge for multi-machine setups beyond single-user
+- Interactive CLI prompt rather than specifying all args at once
+  - For example, I can just type `health log run` and the system will ask me what the distance run was, what my time was, and what the run date was (or enter for today)
