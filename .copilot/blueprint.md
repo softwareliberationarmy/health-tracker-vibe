@@ -23,8 +23,8 @@ For each vertical slice, the following must be true:
 ### Chunks:
 
 1. Create solution and projects: CLI, API, shared models, and test projects (unit, integration, E2E)
-2. Add integration test for API `/about` endpoint using TestServer
-3. Add E2E test: start Docker container, call CLI `--about`, verify output
+2. Add E2E test: start Docker container, call CLI `--about`, verify output
+3. Add integration test for API `/about` endpoint using TestServer
 4. Add unit tests for CLI command routing and output formatting (mock Spectre.Console)
 5. Add unit tests for API `/about` endpoint
 6. Set up Dockerfile for API + SQLite, with data volume and ENV for DB path
@@ -41,8 +41,8 @@ For each vertical slice, the following must be true:
 
 ### Chunks:
 
-1. Add integration test for `POST /weight` (TestServer, in-memory DB)
-2. Add E2E test: CLI logs weight, verify via API call to `/about` endpoint that number of weigh-ins has changed
+1. Add E2E test: CLI logs weight, verify via API call to `/about` endpoint that number of weigh-ins has changed
+2. Add integration test for `POST /weight` (TestServer, in-memory DB)
 3. Add unit tests for CLI input parsing and validation
 4. Add unit tests for API validation and Dapper parameter handling
 5. Add `POST /weight` endpoint to API (accepts and validates payload, stores in DB)
@@ -59,8 +59,8 @@ For each vertical slice, the following must be true:
 
 ### Chunks:
 
-1. Add integration test for `GET /weight/last/{count}`
-2. Add E2E test: log weights, view weights, verify output
+1. Add E2E test: log weights, view weights, verify output
+2. Add integration test for `GET /weight/last/{count}`
 3. Add unit tests for CLI output formatting (mock Spectre.Console)
 4. Add unit tests for API endpoint
 5. Add `GET /weight/last/{count}` endpoint to API (returns last X weigh-ins)
@@ -75,8 +75,8 @@ For each vertical slice, the following must be true:
 
 ### Chunks:
 
-1. Add integration test for `POST /run`
-2. Add E2E test: CLI logs run, verify via direct DB query or API
+1. Add E2E test: CLI logs run, verify via direct DB query or API
+2. Add integration test for `POST /run`
 3. Add unit tests for CLI input parsing and validation
 4. Add unit tests for API validation and Dapper parameter handling
 5. Add `POST /run` endpoint to API (accepts and validates payload, stores in DB)
@@ -93,8 +93,8 @@ For each vertical slice, the following must be true:
 
 ### Chunks:
 
-1. Add integration test for `GET /run/last/{count}`
-2. Add E2E test: log runs, view runs, verify output
+1. Add E2E test: log runs, view runs, verify output
+2. Add integration test for `GET /run/last/{count}`
 3. Add unit tests for CLI output formatting (mock Spectre.Console)
 4. Add unit tests for API endpoint
 5. Add `GET /run/last/{count}` endpoint to API (returns last X runs)
