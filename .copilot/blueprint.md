@@ -4,6 +4,18 @@ This blueprint defines the step-by-step plan for building the Health Tracker CLI
 
 ---
 
+## Vertical Slice Acceptance Criteria (Definition of Done)
+
+For each vertical slice, the following must be true:
+
+- All code is refactored for maintainability and consistency as the slice is developed
+- All relevant tests (unit, integration, E2E) are implemented and passing
+- Code is linted and free of formatting issues
+- Documentation and usage examples are updated as needed
+- The feature is fully functional and meets the requirements of the slice
+
+---
+
 ## Vertical Slice 1: Infrastructure & `--about` Command (End-to-End Skeleton)
 
 **Goal:** Prove the architecture works end-to-end by implementing the minimal infrastructure and the `health --about` command, including integration and E2E tests.
@@ -91,13 +103,4 @@ This blueprint defines the step-by-step plan for building the Health Tracker CLI
 
 ---
 
-## Finalization & Polish
-
-- Review and refactor code for maintainability and consistency
-- Ensure all tests pass and code is linted/clean
-- Update documentation and usage examples
-- Prepare for packaging and deployment
-
----
-
-This blueprint ensures each feature is delivered end-to-end, with tests and validation at every layer, following TDD and thin vertical slice principles.
+> **Note:** This blueprint ensures each feature is delivered end-to-end, with tests and validation at every layer, following TDD and thin vertical slice principles. Remember to update this document as needed to reflect the current state and requirements of the project.
