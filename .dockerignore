@@ -1,0 +1,21 @@
+# Ignore build output folders
+**/bin/
+**/obj/
+
+# Ignore git and VS files
+.git/
+.vs/
+**/.gitignore
+**/*.user
+**/*.userosscache
+**/*.suo
+
+# Ignore test folders
+tests/
+
+# Ignore other files
+**/*.md
+**/*.log
+**/*.sqlite
+**/.dockerignore
+**/Dockerfile

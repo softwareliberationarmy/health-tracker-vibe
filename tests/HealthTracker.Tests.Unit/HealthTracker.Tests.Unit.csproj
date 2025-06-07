@@ -21,6 +21,7 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\HealthTracker.Api\HealthTracker.Api.csproj" />
     <ProjectReference Include="..\..\src\HealthTracker.Cli\HealthTracker.Cli.csproj" />
     <ProjectReference Include="..\..\src\HealthTracker.Shared\HealthTracker.Shared.csproj" />
   </ItemGroup>
