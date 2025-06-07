@@ -1,3 +1,4 @@
+using HealthTracker.Cli.Services;
 using HealthTracker.Shared.Models;
 using Spectre.Console;
 
@@ -5,19 +6,24 @@ namespace HealthTracker.Cli.Commands;
 
 public class AboutCommand
 {
+    private readonly IApiClient _apiClient;
+
+    public AboutCommand(IApiClient apiClient)
+    {
+        _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+    }
+
     public async Task ExecuteAsync(IAnsiConsole console)
     {
-        // For now, return mock data as specified in the requirements
-        var mockResponse = new AboutResponse
-        {
-            ApiVersion = "1.0.0",
-            WeighInsCount = 0,
-            RunsCount = 0,
-            LastWeighInDate = null,
-            LastRunDate = null
-        };
+        var aboutResponse = await _apiClient.GetAboutAsync();
 
-        await DisplayAboutInformation(console, mockResponse);
+        if (aboutResponse == null)
+        {
+            console.MarkupLine("[bold red]Error:[/] API is unreachable. Please ensure the API is running and try again.");
+            return;
+        }
+
+        await DisplayAboutInformation(console, aboutResponse);
     }
 
     private static async Task DisplayAboutInformation(IAnsiConsole console, AboutResponse aboutInfo)
