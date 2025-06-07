@@ -2,6 +2,12 @@
   "github.copilot.chat.codeGeneration.instructions": [
     {
       "file": ".copilot/code-generation.md"
+    },
+    {
+      "file": ".copilot/spec.md"
+    },
+    {
+      "file": ".copilot/blueprint.md"
     }
   ],
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,

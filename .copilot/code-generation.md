@@ -6,18 +6,12 @@
 
 ## We practice TDD. That means:
 
-- Write tests before writing the implementation code
-- Only write enough code to make the failing test pass
-- Refactor code continuously while ensuring tests still pass
-
-### TDD Implementation Process
-
-- Write a failing test that defines a desired function or improvement
-- Run the test to confirm it fails as expected
-- Write minimal code to make the test pass
-- Run the test to confirm success
-- Refactor code to improve design while keeping tests green
-- Repeat the cycle for each new feature or bugfix
+- Write one failing unit test for the functionality you want to implement
+- Run the test and make sure it fails with the correct error message
+- Only write enough code to make that failing test pass
+- Run all other associated tests to make sure they still pass, too
+- Review the test code. If there are maintainability issues like duplication or complex methods, refactor the test code. Re-run the tests after any refactorings to make sure the tests still pass.
+- Review the code you wrote to make the tests pass. If there are maintainability issues like duplication or complex methods, refactor that code. Re-run the tests after any refactorings to make sure the tests still pass.
 
 ## Writing code
 
