@@ -24,6 +24,10 @@
 - When you are troubleshooting something, always assume that the code was working before you touched it, and that the issue was introduced by your changes, not by code which wasn't touched recently.
 - NEVER name things as 'improved' or 'new' or 'enhanced', etc. Code naming should be evergreen. What is new today will be "old" someday.
 
+### Writing tests
+
+- NEVER use reflection to test a private method. If the method is important enough to test, refactor the code to make it publicly accessible. 
+
 ### C# coding standards
 
 - Prefer curly braces for all conditional code blocks, even if they only have one statement
